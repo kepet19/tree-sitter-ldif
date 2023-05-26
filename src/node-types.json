@@ -1,11 +1,213 @@
 [
   {
-    "type": "source_file",
+    "type": "attrval_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "value_spec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "changerecord",
     "named": true,
     "fields": {}
   },
   {
-    "type": "hello",
+    "type": "distinguishedName",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "dn_key_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dn_identifier",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "dn_key_value",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dn_identifier",
+          "named": true
+        },
+        {
+          "type": "dn_value",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dn_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "distinguishedName",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "dn_value",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ldif_change_record",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "changerecord",
+          "named": true
+        },
+        {
+          "type": "dn_spec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "mod_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "attrval_spec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "ldif_change_record",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "value_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": "add",
+    "named": false
+  },
+  {
+    "type": "add:",
+    "named": false
+  },
+  {
+    "type": "changetype:",
+    "named": false
+  },
+  {
+    "type": "comment",
+    "named": true
+  },
+  {
+    "type": "delete",
+    "named": false
+  },
+  {
+    "type": "delete:",
+    "named": false
+  },
+  {
+    "type": "dn:",
+    "named": false
+  },
+  {
+    "type": "identifier",
+    "named": true
+  },
+  {
+    "type": "moddn",
+    "named": false
+  },
+  {
+    "type": "modify",
+    "named": false
+  },
+  {
+    "type": "modrdn",
+    "named": false
+  },
+  {
+    "type": "newrdn:",
+    "named": false
+  },
+  {
+    "type": "replace:",
     "named": false
   }
 ]

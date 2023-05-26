@@ -1,9 +1,9 @@
 {
     "name": "tree-sitter-ldif",
     "version": "0.0.1",
-    "description": "A tree-sitter grammer for LDIF files",
+    "description": "LDIF grammar for tree-sitter",
     "main": "bindings/node",
-    "scripts": {
+    "rustscripts": {
         "build": "tree-sitter generate && node-gyp build",
         "test": "npm run build && tree-sitter test"
     },
@@ -20,5 +20,14 @@
     },
     "devDependencies": {
         "tree-sitter-cli": "^0.20.7"
-    }
+    },
+    "tree-sitter": [
+        {
+            "scope": "source.ldif",
+            "injection-regex": "ldif",
+            "file-types": [
+                "ldif"
+            ]
+        }
+    ]
 }

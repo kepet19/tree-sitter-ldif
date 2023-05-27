@@ -40,7 +40,7 @@ module.exports = grammar({
 
         distinguishedName: $ => $.name,
 
-        name: $ => seq($.name_componet, optional(seq(",", $.name_componet))),
+        name: $ => seq($.name_componet, repeat(seq(",", $.name_componet))),
 
         name_componet: $ => seq($.attributeTypeAndValue, repeat(seq("+", $.attributeTypeAndValue))),
 

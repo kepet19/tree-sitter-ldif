@@ -23,13 +23,9 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
-        {
-          "type": "keychar",
-          "named": true
-        },
         {
           "type": "ldap_oid",
           "named": true
@@ -178,11 +174,6 @@
     }
   },
   {
-    "type": "keychar",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "ldap_oid",
     "named": true,
     "fields": {}
@@ -286,21 +277,7 @@
   {
     "type": "pair",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "hexpair",
-          "named": true
-        },
-        {
-          "type": "special",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "source_file",
@@ -330,15 +307,7 @@
       "required": false,
       "types": [
         {
-          "type": "hexpair",
-          "named": true
-        },
-        {
           "type": "pair",
-          "named": true
-        },
-        {
-          "type": "stringchar",
           "named": true
         }
       ]
@@ -436,10 +405,6 @@
     "named": false
   },
   {
-    "type": "hexpair",
-    "named": true
-  },
-  {
     "type": "identifier",
     "named": true
   },
@@ -462,14 +427,6 @@
   {
     "type": "replace:",
     "named": false
-  },
-  {
-    "type": "special",
-    "named": true
-  },
-  {
-    "type": "stringchar",
-    "named": true
   },
   {
     "type": "url",

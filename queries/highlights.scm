@@ -14,22 +14,10 @@
 
 (pair) @escape
 
-            (mod_spec
-              (AttributeDescription
-                (attributeType
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)
-                  (keychar)))) @comment
+(mod_spec
+  (AttributeDescription
+    (attributeType
+      ))) @comment
 
     (mod_spec
       (attrval_spec

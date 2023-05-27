@@ -137,7 +137,7 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "stringchar"
+                  "name": "_stringchar"
                 },
                 {
                   "type": "SYMBOL",
@@ -152,7 +152,7 @@
                 "members": [
                   {
                     "type": "SYMBOL",
-                    "name": "stringchar"
+                    "name": "_stringchar"
                   },
                   {
                     "type": "SYMBOL",
@@ -172,7 +172,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "hexpair"
+              "name": "_hexpair"
             }
           ]
         },
@@ -190,7 +190,7 @@
                 "members": [
                   {
                     "type": "SYMBOL",
-                    "name": "stringchar"
+                    "name": "_stringchar"
                   },
                   {
                     "type": "SYMBOL",
@@ -219,7 +219,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "special"
+              "name": "_special"
             },
             {
               "type": "STRING",
@@ -231,21 +231,21 @@
             },
             {
               "type": "SYMBOL",
-              "name": "hexpair"
+              "name": "_hexpair"
             }
           ]
         }
       ]
     },
-    "hexpair": {
+    "_hexpair": {
       "type": "PATTERN",
       "value": "[\\dABCDEFabcdef]{2}"
     },
-    "stringchar": {
+    "_stringchar": {
       "type": "PATTERN",
       "value": "[^\\\\\\r\\n\\t,=+<>#;\"]"
     },
-    "special": {
+    "_special": {
       "type": "PATTERN",
       "value": "[,=+<>#;]"
     },
@@ -490,13 +490,13 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "keychar"
+                  "name": "_keychar"
                 },
                 {
                   "type": "REPEAT",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "keychar"
+                    "name": "_keychar"
                   }
                 }
               ]
@@ -581,7 +581,7 @@
         }
       ]
     },
-    "keychar": {
+    "_keychar": {
       "type": "CHOICE",
       "members": [
         {

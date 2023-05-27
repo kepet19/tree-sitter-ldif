@@ -51,29 +51,29 @@ module.exports = grammar({
         ),
 
         string: $ => choice(
-            repeat1(choice($.stringchar, $.pair)),
-            seq("#", $.hexpair),
-            seq('"', repeat(choice($.stringchar, $.pair)), '"')
+            repeat1(choice($._stringchar, $.pair)),
+            seq("#", $._hexpair),
+            seq('"', repeat(choice($._stringchar, $.pair)), '"')
         ) ,
 
 
-        // "\" ( special / "\" / QUOTATION / hexpair )
+        // "\" ( special / "\" / QUOTATION / _hexpair )
         pair: $ => seq(
             "\\",
             choice(
-                $.special,
+                $._special,
                 "\\",
                 '"',
-                $.hexpair,
+                $._hexpair,
             )
         ),
 
-        hexpair: $ => /[\dABCDEFabcdef]{2}/,
+        _hexpair: $ => /[\dABCDEFabcdef]{2}/,
 
         // <any character except one of special, "\" or QUOTATION >
-        stringchar: $ => /[^\\\r\n\t,=+<>#;"]/,
+        _stringchar: $ => /[^\\\r\n\t,=+<>#;"]/,
 
-        special: $ => /[,=+<>#;]/,
+        _special: $ => /[,=+<>#;]/,
 
 
         changerecord: $ => seq(
@@ -134,7 +134,7 @@ module.exports = grammar({
         ),
 
        attributeType: $ => choice(
-            seq(ALPHA, repeat1($.keychar)),
+            seq(ALPHA, repeat1($._keychar)),
             $.ldap_oid,
         ),
 
@@ -149,7 +149,7 @@ module.exports = grammar({
         ),
         option: $ => repeat1(OPT_CHAR),
 
-        keychar: $ => choice(OPT_CHAR),
+        _keychar: $ => choice(OPT_CHAR),
 
         // URI Generic Synxtax https://www.ietf.org/rfc/rfc3986.txt
         url: $ =>  /(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/,

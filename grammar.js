@@ -7,8 +7,8 @@ const SEP = /\r?\n/;
 module.exports = grammar({
     name: 'ldif',
 
-    // extras: $ => [/\s/, $.comment],
-    // word: $ => $.identifier,
+    extras: $ => [/\s/, $.comment],
+    word: $ => $.identifier,
 
     rules: {
         source_file: $ => repeat($._definition),
@@ -31,27 +31,57 @@ module.exports = grammar({
         dn_spec: $ => seq(
             "dn:",
             FILL,
-            $.distinguishedName
+            choice($.distinguishedName, $.identifier),
+            SEP
         ),
 
-        distinguishedName: $ => //repeat(
-                $.dn_key_value,
-        //),
+        distinguishedName: $ => $.name,
 
-        dn_key_value: $ => seq(
-            $.dn_identifier,
+        name: $ => seq($.name_componet, optional(seq(",", $.name_componet))),
+
+        name_componet: $ => seq($.attributeTypeAndValue, optional(seq("+", $.attributeTypeAndValue))),
+
+        attributeTypeAndValue: $ => seq(
+            $.attributeType,
             "=",
-            $.dn_value,
-            optional(",")
+            $.string
         ),
 
-        dn_identifier: $ => /[a-zA-Z][\w\-^\S\t\n\r]+/,
-        dn_value: $ => /[a-zA-Z][\w\-^\S\t\n\r]+/,
+        string: $ => choice(
+            choice($.stringchar, $.pair),
+            seq("#", $.hexpair),
+            seq('"', choice($.stringchar, $.pair), '"')
+        ) ,
+
+
+        // "\" ( special / "\" / QUOTATION / hexpair )
+        pair: $ => seq(
+            "\\",
+            choice(
+                $.special,
+                "\\",
+                '"',
+                $.hexpair,
+            )
+        ),
+
+        hexpair: $ => /[\dABCDEFabcdef]{2}/,
+
+        // <any character except one of special, "\" or QUOTATION >
+        stringchar: $ => /[^\\\r\n\t"]+/,
+
+        special: $ => /[,=+<>#;]/,
+
 
         changerecord: $ => seq(
                 "changetype:",
                 FILL,
-                choice("add", "delete", "modify", "moddn")
+                choice(
+                    $.change_add,
+                    $.change_delete,
+                    $.change_moddn,
+                    $.change_modify
+                )
             ),
 
         change_add: $ => seq("add",
@@ -72,32 +102,57 @@ module.exports = grammar({
                 //                 (    FILL distinguishedName /
                 //                     ":" FILL base64-distinguishedName) SEP)
         ),
-        change_modify: $ => seq("modify",
+        change_modify: $ => seq(
+            "modify",
             SEP,
             repeat($.mod_spec)
         ),
 
         mod_spec: $ => seq(
             choice("add:", "delete:", "replace:"),
-            FILL, $.attrval_spec, SEP,
+            FILL, $.AttributeDescription, SEP,
+            $.attrval_spec,
             "-", SEP
         ),
 
         attrval_spec: $ => seq(
-            $.
-            FILL,
-            $.value_spec
+            $.AttributeDescription,
+            $.value_spec,
+            SEP
         ),
 
         value_spec: $ => seq(
-            // (    FILL 0*1(SAFE-STRING) /
-            //                                 ":" FILL (BASE64-STRING) /
-            //                                 "<" FILL url)
-            //                            ; See notes 7 and 8
+            ":",
+            choice(
+                seq(FILL, /\w*/),
+                seq(":", FILL, $.base64_string),
+                seq("<", FILL, $.url)
+            )
+        ),
+
+       attributeType: $ => choice(
+            $.ldap_oid,
             $.identifier
         ),
 
+        ldap_oid: $ => seq(
+            /\d+/,
+            optional(seq(".", /\d+/))
+        ),
 
+        options: $ => choice(
+            $.identifier,
+            seq($.identifier, ";", $.options)
+        ),
+
+        // URI Generic Synxtax https://www.ietf.org/rfc/rfc3986.txt
+        url: $ =>  /(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/,
+
+        AttributeDescription: $ => seq(
+            $.attributeType,
+            optional(seq(";", $.options))
+        ),
+        base64_string: $ =>  $.identifier,
         identifier: $ =>  /[a-zA-Z][\w\-]+/,
         comment: $ => token(seq('#', /.*/))
     },

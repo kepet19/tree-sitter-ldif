@@ -1,12 +1,73 @@
 [
   {
-    "type": "attrval_spec",
+    "type": "AttributeDescription",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "attributeType",
+          "named": true
+        },
+        {
+          "type": "options",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "attributeType",
     "named": true,
     "fields": {},
     "children": {
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "ldap_oid",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "attributeTypeAndValue",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "attributeType",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "attrval_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "AttributeDescription",
+          "named": true
+        },
         {
           "type": "value_spec",
           "named": true
@@ -15,9 +76,76 @@
     }
   },
   {
-    "type": "changerecord",
+    "type": "base64_string",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "change_add",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "change_delete",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "change_moddn",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "change_modify",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "mod_spec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "changerecord",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "change_add",
+          "named": true
+        },
+        {
+          "type": "change_delete",
+          "named": true
+        },
+        {
+          "type": "change_moddn",
+          "named": true
+        },
+        {
+          "type": "change_modify",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "distinguishedName",
@@ -28,31 +156,7 @@
       "required": true,
       "types": [
         {
-          "type": "dn_key_value",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "dn_identifier",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "dn_key_value",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "dn_identifier",
-          "named": true
-        },
-        {
-          "type": "dn_value",
+          "type": "name",
           "named": true
         }
       ]
@@ -69,12 +173,16 @@
         {
           "type": "distinguishedName",
           "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
         }
       ]
     }
   },
   {
-    "type": "dn_value",
+    "type": "ldap_oid",
     "named": true,
     "fields": {}
   },
@@ -102,11 +210,83 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
+          "type": "AttributeDescription",
+          "named": true
+        },
+        {
           "type": "attrval_spec",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "name_componet",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "name_componet",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "attributeTypeAndValue",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "options",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "options",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "pair",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "hexpair",
+          "named": true
+        },
+        {
+          "type": "special",
           "named": true
         }
       ]
@@ -132,7 +312,7 @@
     }
   },
   {
-    "type": "value_spec",
+    "type": "string",
     "named": true,
     "fields": {},
     "children": {
@@ -140,11 +320,50 @@
       "required": true,
       "types": [
         {
-          "type": "identifier",
+          "type": "hexpair",
+          "named": true
+        },
+        {
+          "type": "pair",
+          "named": true
+        },
+        {
+          "type": "stringchar",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "value_spec",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "base64_string",
+          "named": true
+        },
+        {
+          "type": "url",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "#",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
   },
   {
     "type": ",",
@@ -155,7 +374,27 @@
     "named": false
   },
   {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
     "type": "=",
+    "named": false
+  },
+  {
+    "type": "\\",
     "named": false
   },
   {
@@ -187,6 +426,10 @@
     "named": false
   },
   {
+    "type": "hexpair",
+    "named": true
+  },
+  {
     "type": "identifier",
     "named": true
   },
@@ -209,5 +452,17 @@
   {
     "type": "replace:",
     "named": false
+  },
+  {
+    "type": "special",
+    "named": true
+  },
+  {
+    "type": "stringchar",
+    "named": true
+  },
+  {
+    "type": "url",
+    "named": true
   }
 ]

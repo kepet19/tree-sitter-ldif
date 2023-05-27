@@ -1,5 +1,6 @@
 {
   "name": "ldif",
+  "word": "identifier",
   "rules": {
     "source_file": {
       "type": "REPEAT",
@@ -46,36 +47,50 @@
           "value": "\\s*"
         },
         {
-          "type": "SYMBOL",
-          "name": "distinguishedName"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "distinguishedName"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            }
+          ]
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\r?\\n"
         }
       ]
     },
     "distinguishedName": {
       "type": "SYMBOL",
-      "name": "dn_key_value"
+      "name": "name"
     },
-    "dn_key_value": {
+    "name": {
       "type": "SEQ",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "dn_identifier"
-        },
-        {
-          "type": "STRING",
-          "value": "="
-        },
-        {
-          "type": "SYMBOL",
-          "name": "dn_value"
+          "name": "name_componet"
         },
         {
           "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": ","
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "name_componet"
+                }
+              ]
             },
             {
               "type": "BLANK"
@@ -84,13 +99,151 @@
         }
       ]
     },
-    "dn_identifier": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z][\\w\\-^\\S\\t\\n\\r]+"
+    "name_componet": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "attributeTypeAndValue"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "+"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "attributeTypeAndValue"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
-    "dn_value": {
+    "attributeTypeAndValue": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "attributeType"
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        }
+      ]
+    },
+    "string": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "stringchar"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "pair"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "#"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "hexpair"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "\""
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "stringchar"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "pair"
+                }
+              ]
+            },
+            {
+              "type": "STRING",
+              "value": "\""
+            }
+          ]
+        }
+      ]
+    },
+    "pair": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\\"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "special"
+            },
+            {
+              "type": "STRING",
+              "value": "\\"
+            },
+            {
+              "type": "STRING",
+              "value": "\""
+            },
+            {
+              "type": "SYMBOL",
+              "name": "hexpair"
+            }
+          ]
+        }
+      ]
+    },
+    "hexpair": {
       "type": "PATTERN",
-      "value": "[a-zA-Z][\\w\\-^\\S\\t\\n\\r]+"
+      "value": "[\\dABCDEFabcdef]{2}"
+    },
+    "stringchar": {
+      "type": "PATTERN",
+      "value": "[^\\\\\\r\\n\\t\"]+"
+    },
+    "special": {
+      "type": "PATTERN",
+      "value": "[,=+<>#;]"
     },
     "changerecord": {
       "type": "SEQ",
@@ -107,20 +260,20 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "STRING",
-              "value": "add"
+              "type": "SYMBOL",
+              "name": "change_add"
             },
             {
-              "type": "STRING",
-              "value": "delete"
+              "type": "SYMBOL",
+              "name": "change_delete"
             },
             {
-              "type": "STRING",
-              "value": "modify"
+              "type": "SYMBOL",
+              "name": "change_moddn"
             },
             {
-              "type": "STRING",
-              "value": "moddn"
+              "type": "SYMBOL",
+              "name": "change_modify"
             }
           ]
         }
@@ -220,6 +373,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "AttributeDescription"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\r?\\n"
+        },
+        {
+          "type": "SYMBOL",
           "name": "attrval_spec"
         },
         {
@@ -236,16 +397,16 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "PATTERN",
-          "value": "[a-zA-Z][\\w\\-]+:"
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\s*"
+          "type": "SYMBOL",
+          "name": "AttributeDescription"
         },
         {
           "type": "SYMBOL",
           "name": "value_spec"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\r?\\n"
         }
       ]
     },
@@ -253,10 +414,169 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "\\s*"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\w*"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\s*"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "base64_string"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "<"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\s*"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "url"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "attributeType": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ldap_oid"
+        },
+        {
           "type": "SYMBOL",
           "name": "identifier"
         }
       ]
+    },
+    "ldap_oid": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "\\d+"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "."
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "\\d+"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "options": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "identifier"
+            },
+            {
+              "type": "STRING",
+              "value": ";"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "options"
+            }
+          ]
+        }
+      ]
+    },
+    "url": {
+      "type": "PATTERN",
+      "value": "(([^:/?#]+):)?(\\/\\/([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
+    },
+    "AttributeDescription": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "attributeType"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ";"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "options"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "base64_string": {
+      "type": "SYMBOL",
+      "name": "identifier"
     },
     "identifier": {
       "type": "PATTERN",
@@ -283,6 +603,10 @@
     {
       "type": "PATTERN",
       "value": "\\s"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "comment"
     }
   ],
   "conflicts": [],

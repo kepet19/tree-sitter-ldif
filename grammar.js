@@ -3,6 +3,8 @@
 
 const FILL = /\s*/;
 const SEP = /\r?\n/;
+const ALPHA = /\w/;
+const DIGIT = /\d/;
 
 module.exports = grammar({
     name: 'ldif',
@@ -31,7 +33,7 @@ module.exports = grammar({
         dn_spec: $ => seq(
             "dn:",
             FILL,
-            choice($.distinguishedName, $.identifier),
+            $.distinguishedName,
             SEP
         ),
 
@@ -39,7 +41,7 @@ module.exports = grammar({
 
         name: $ => seq($.name_componet, optional(seq(",", $.name_componet))),
 
-        name_componet: $ => seq($.attributeTypeAndValue, optional(seq("+", $.attributeTypeAndValue))),
+        name_componet: $ => seq($.attributeTypeAndValue, repeat(seq("+", $.attributeTypeAndValue))),
 
         attributeTypeAndValue: $ => seq(
             $.attributeType,
@@ -48,9 +50,9 @@ module.exports = grammar({
         ),
 
         string: $ => choice(
-            choice($.stringchar, $.pair),
+            repeat1(choice($.stringchar, $.pair)),
             seq("#", $.hexpair),
-            seq('"', choice($.stringchar, $.pair), '"')
+            seq('"', repeat(choice($.stringchar, $.pair)), '"')
         ) ,
 
 
@@ -68,7 +70,7 @@ module.exports = grammar({
         hexpair: $ => /[\dABCDEFabcdef]{2}/,
 
         // <any character except one of special, "\" or QUOTATION >
-        stringchar: $ => /[^\\\r\n\t"]+/,
+        stringchar: $ => /[^\\\r\n\t,=+<>#;"]/,
 
         special: $ => /[,=+<>#;]/,
 
@@ -131,8 +133,8 @@ module.exports = grammar({
         ),
 
        attributeType: $ => choice(
+            seq(ALPHA, repeat1($.keychar)),
             $.ldap_oid,
-            $.identifier
         ),
 
         ldap_oid: $ => seq(
@@ -144,6 +146,7 @@ module.exports = grammar({
             $.identifier,
             seq($.identifier, ";", $.options)
         ),
+        keychar: $ => choice(ALPHA, DIGIT, "-"),
 
         // URI Generic Synxtax https://www.ietf.org/rfc/rfc3986.txt
         url: $ =>  /(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/,
@@ -157,6 +160,9 @@ module.exports = grammar({
         comment: $ => token(seq('#', /.*/))
     },
 
-
-
 });
+
+function repeat1(rule) {
+  return seq(rule, repeat(rule))
+}
+

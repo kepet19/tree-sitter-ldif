@@ -23,11 +23,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "identifier",
+          "type": "keychar",
           "named": true
         },
         {
@@ -173,13 +173,14 @@
         {
           "type": "distinguishedName",
           "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
         }
       ]
     }
+  },
+  {
+    "type": "keychar",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "ldap_oid",
@@ -316,8 +317,8 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": true,
+      "multiple": true,
+      "required": false,
       "types": [
         {
           "type": "hexpair",

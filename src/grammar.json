@@ -47,17 +47,8 @@
           "value": "\\s*"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "distinguishedName"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "identifier"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "distinguishedName"
         },
         {
           "type": "PATTERN",
@@ -107,25 +98,20 @@
           "name": "attributeTypeAndValue"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "+"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "attributeTypeAndValue"
-                }
-              ]
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "+"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "attributeTypeAndValue"
+              }
+            ]
+          }
         }
       ]
     },
@@ -150,15 +136,36 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "stringchar"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "stringchar"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "pair"
+                }
+              ]
             },
             {
-              "type": "SYMBOL",
-              "name": "pair"
+              "type": "REPEAT",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "stringchar"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "pair"
+                  }
+                ]
+              }
             }
           ]
         },
@@ -183,17 +190,20 @@
               "value": "\""
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "stringchar"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "pair"
-                }
-              ]
+              "type": "REPEAT",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "stringchar"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "pair"
+                  }
+                ]
+              }
             },
             {
               "type": "STRING",
@@ -239,7 +249,7 @@
     },
     "stringchar": {
       "type": "PATTERN",
-      "value": "[^\\\\\\r\\n\\t\"]+"
+      "value": "[^\\\\\\r\\n\\t,=+<>#;\"]"
     },
     "special": {
       "type": "PATTERN",
@@ -475,12 +485,33 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "ldap_oid"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "\\w"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "keychar"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "keychar"
+                  }
+                }
+              ]
+            }
+          ]
         },
         {
           "type": "SYMBOL",
-          "name": "identifier"
+          "name": "ldap_oid"
         }
       ]
     },
@@ -537,6 +568,23 @@
               "name": "options"
             }
           ]
+        }
+      ]
+    },
+    "keychar": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "\\w"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\d"
+        },
+        {
+          "type": "STRING",
+          "value": "-"
         }
       ]
     },

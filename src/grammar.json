@@ -1,6 +1,5 @@
 {
   "name": "ldif",
-  "word": "identifier",
   "rules": {
     "source_file": {
       "type": "REPEAT",
@@ -550,7 +549,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "identifier"
+          "name": "option"
         },
         {
           "type": "SEQ",
@@ -571,20 +570,28 @@
         }
       ]
     },
+    "option": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[\\w\\d-]"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "PATTERN",
+            "value": "[\\w\\d-]"
+          }
+        }
+      ]
+    },
     "keychar": {
       "type": "CHOICE",
       "members": [
         {
           "type": "PATTERN",
-          "value": "\\w"
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\d"
-        },
-        {
-          "type": "STRING",
-          "value": "-"
+          "value": "[\\w\\d-]"
         }
       ]
     },

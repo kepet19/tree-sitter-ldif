@@ -5,12 +5,13 @@ const FILL = /\s*/;
 const SEP = /\r?\n/;
 const ALPHA = /\w/;
 const DIGIT = /\d/;
+const OPT_CHAR = /[\w\d-]/
 
 module.exports = grammar({
     name: 'ldif',
 
     extras: $ => [/\s/, $.comment],
-    word: $ => $.identifier,
+    //word: $ => $.identifier,
 
     rules: {
         source_file: $ => repeat($._definition),
@@ -143,10 +144,12 @@ module.exports = grammar({
         ),
 
         options: $ => choice(
-            $.identifier,
+            $.option,
             seq($.identifier, ";", $.options)
         ),
-        keychar: $ => choice(ALPHA, DIGIT, "-"),
+        option: $ => repeat1(OPT_CHAR),
+
+        keychar: $ => choice(OPT_CHAR),
 
         // URI Generic Synxtax https://www.ietf.org/rfc/rfc3986.txt
         url: $ =>  /(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/,

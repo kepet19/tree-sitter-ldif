@@ -256,6 +256,11 @@
     }
   },
   {
+    "type": "option",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "options",
     "named": true,
     "fields": {},
@@ -265,6 +270,10 @@
       "types": [
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "option",
           "named": true
         },
         {
